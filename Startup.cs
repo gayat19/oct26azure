@@ -31,6 +31,14 @@ namespace SampleCloudAKSDeploy
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SampleCloudAKSDeploy", Version = "v1" });
             });
+            services.AddCors(c => {
+                c.AddPolicy("MyCors",
+                            builder => {
+                                builder.WithOrigins("http://localhost:4200")
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                            });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,7 +52,7 @@ namespace SampleCloudAKSDeploy
             }
 
             app.UseRouting();
-
+            app.UseCors("MyCors");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
