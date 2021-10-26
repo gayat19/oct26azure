@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samplecloudaksdeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: SampleCloudAKSDeploy
+  template:
+    metadata:
+      labels:
+        app: SampleCloudAKSDeploy
+    spec:
+      containers:
+      - name: aksg3cr
+        image: aksg3cr.azurecr.io/aksg3cr:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: dsconfigsn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: samplecloudaksdeploy
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: SampleCloudAKSDeploy
